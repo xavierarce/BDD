@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCD République Galactique</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: auto;
+        }
+        
+        .container {
+            min-width: 1400px;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #ffd700;
+            font-size: 32px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 30px;
+        }
+        
+        .legend {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .legend-item {
+            display: inline-block;
+            margin-right: 20px;
+            font-size: 14px;
+        }
+        
+        .diagram {
+            position: relative;
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        
+        .entity {
+            position: absolute;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: 3px solid #4a5568;
+            border-radius: 10px;
+            padding: 15px;
+            min-width: 200px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            color: white;
+        }
+        
+        .entity-title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+            text-align: center;
+        }
+        
+        .entity-attr {
+            font-size: 12px;
+            margin: 4px 0;
+            padding-left: 5px;
+        }
+        
+        .pk { color: #ffd700; font-weight: bold; }
+        .fk { color: #90cdf4; }
+        .uk { color: #9ae6b4; }
+        
+        .relation {
+            position: absolute;
+            height: 2px;
+            background: #4299e1;
+            transform-origin: left center;
+        }
+        
+        .relation-label {
+            position: absolute;
+            background: #4299e1;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-size: 11px;
+            white-space: nowrap;
+        }
+        
+        .card-left { left: 50%; top: 20px; }
+        .card-right { right: 50%; top: 20px; }
+        
+        /* Positionnement des entités */
+        #planete { top: 50px; left: 600px; }
+        #base { top: 250px; left: 300px; }
+        #usine { top: 250px; left: 900px; }
+        #jedi { top: 50px; left: 100px; }
+        #modele { top: 450px; left: 1100px; }
+        #clone { top: 450px; left: 800px; }
+        #unite { top: 450px; left: 500px; }
+        #vaisseau { top: 650px; left: 400px; }
+        #technicien { top: 450px; left: 100px; }
+        #mission { top: 850px; left: 600px; }
+        #maintenance { top: 650px; left: 800px; }
+        
+        .arrow {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            position: absolute;
+        }
+        
+        .instruction {
+            background: rgba(255, 215, 0, 0.2);
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            color: white;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌟 MCD - RÉPUBLIQUE GALACTIQUE 🌟</h1>
+        
+        <div class="legend">
+            <div class="legend-item"><span class="pk">PK</span> = Clé Primaire</div>
+            <div class="legend-item"><span class="fk">FK</span> = Clé Étrangère</div>
+            <div class="legend-item"><span class="uk">UK</span> = Unique</div>
+            <div class="legend-item">🔵 Relations 1:N</div>
+            <div class="legend-item">🔷 Relations N:N</div>
+        </div>
+        
+        <div class="diagram" style="height: 1100px; position: relative;">
+            
+            <!-- PLANETE -->
+            <div id="planete" class="entity">
+                <div class="entity-title">🪐 PLANÈTE</div>
+                <div class="entity-attr pk">🔑 id_planete</div>
+                <div class="entity-attr uk">📛 nom_planete</div>
+                <div class="entity-attr">🌌 secteur_galactique</div>
+                <div class="entity-attr">👥 population</div>
+                <div class="entity-attr">🏛️ statut_politique</div>
+            </div>
+            
+            <!-- BASE REPUBLICAINE -->
+            <div id="base" class="entity">
+                <div class="entity-title">🏭 BASE_RÉPUBLICAINE</div>
+                <div class="entity-attr pk">🔑 id_base</div>
+                <div class="entity-attr">📛 nom_base</div>
+                <div class="entity-attr fk">🔗 id_planete</div>
+                <div class="entity-attr">📦 capacite_vaisseaux</div>
+                <div class="entity-attr">🛡️ niveau_securite</div>
+            </div>
+            
+            <!-- JEDI -->
+            <div id="jedi" class="entity">
+                <div class="entity-title">⚔️ JEDI</div>
+                <div class="entity-attr pk">🔑 id_jedi</div>
+                <div class="entity-attr">👤 nom, prenom</div>
+                <div class="entity-attr">🎖️ rang (enum)</div>
+                <div class="entity-attr fk">🔗 id_maitre</div>
+                <div class="entity-attr fk">🔗 planete_origine</div>
+                <div class="entity-attr">⚡ specialite_combat</div>
+            </div>
+            
+            <!-- USINE CLONAGE -->
+            <div id="usine" class="entity">
+                <div class="entity-title">🧬 USINE_CLONAGE</div>
+                <div class="entity-attr pk">🔑 id_usine</div>
+                <div class="entity-attr uk">📛 nom_usine</div>
+                <div class="entity-attr fk">🔗 id_planete</div>
+                <div class="entity-attr">⚙️ capacite_production</div>
+            </div>
+            
+            <!-- MODELE GENETIQUE -->
+            <div id="modele" class="entity">
+                <div class="entity-title">🧪 MODÈLE_GÉNÉTIQUE</div>
+                <div class="entity-attr pk">🔑 id_modele</div>
+                <div class="entity-attr">👨 nom_donneur</div>
+                <div class="entity-attr">📊 taux_reussite</div>
+                <div class="entity-attr">🔬 caracteristiques</div>
+            </div>
+            
+            <!-- CLONE -->
+            <div id="clone" class="entity">
+                <div class="entity-title">👨‍✈️ CLONE</div>
+                <div class="entity-attr pk">🔑 id_clone</div>
+                <div class="entity-attr uk">🏷️ matricule</div>
+                <div class="entity-attr fk">🔗 id_modele</div>
+                <div class="entity-attr fk">🔗 id_usine</div>
+                <div class="entity-attr">🎯 specialisation</div>
+            </div>
+            
+            <!-- UNITE CLONE -->
+            <div id="unite" class="entity">
+                <div class="entity-title">🪖 UNITÉ_CLONE</div>
+                <div class="entity-attr pk">🔑 id_unite</div>
+                <div class="entity-attr uk">📛 nom_unite</div>
+                <div class="entity-attr">👥 effectif</div>
+                <div class="entity-attr">⚔️ type_unite</div>
+                <div class="entity-attr fk">🔗 id_usine</div>
+            </div>
+            
+            <!-- VAISSEAU -->
+            <div id="vaisseau" class="entity">
+                <div class="entity-title">🚀 VAISSEAU</div>
+                <div class="entity-attr pk">🔑 id_vaisseau</div>
+                <div class="entity-attr">📛 nom_vaisseau</div>
+                <div class="entity-attr">🛸 modele</div>
+                <div class="entity-attr fk">🔗 id_base</div>
+                <div class="entity-attr fk">🔗 id_planete_stationnement</div>
+                <div class="entity-attr fk">🔗 id_unite</div>
+                <div class="entity-attr">📊 statut (enum)</div>
+            </div>
+            
+            <!-- TECHNICIEN -->
+            <div id="technicien" class="entity">
+                <div class="entity-title">🔧 TECHNICIEN</div>
+                <div class="entity-attr pk">🔑 id_technicien</div>
+                <div class="entity-attr">👤 nom, prenom</div>
+                <div class="entity-attr uk">📧 email</div>
+                <div class="entity-attr">🛠️ specialite</div>
+                <div class="entity-attr fk">🔗 id_base</div>
+            </div>
+            
+            <!-- MISSION -->
+            <div id="mission" class="entity">
+                <div class="entity-title">🎯 MISSION</div>
+                <div class="entity-attr pk">🔑 id_mission</div>
+                <div class="entity-attr uk">🏷️ code_mission</div>
+                <div class="entity-attr">⚔️ type_mission (enum)</div>
+                <div class="entity-attr fk">🔗 id_planete_cible</div>
+                <div class="entity-attr">📅 date_debut, date_fin</div>
+                <div class="entity-attr">📊 statut (enum)</div>
+            </div>
+            
+            <!-- MAINTENANCE -->
+            <div id="maintenance" class="entity">
+                <div class="entity-title">🔨 MAINTENANCE</div>
+                <div class="entity-attr pk">🔑 id_maintenance</div>
+                <div class="entity-attr fk">🔗 id_vaisseau</div>
+                <div class="entity-attr fk">🔗 id_technicien</div>
+                <div class="entity-attr fk">🔗 id_mission</div>
+                <div class="entity-attr">🛠️ type_maintenance</div>
+                <div class="entity-attr">💰 cout_estime</div>
+            </div>
+            
+            <!-- Relations visuelles simplifiées -->
+            <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;">
+                <!-- PLANETE vers BASE -->
+                <line x1="650" y1="150" x2="450" y2="250" stroke="#4299e1" stroke-width="3"/>
+                <text x="530" y="190" fill="#2c5282" font-size="12">héberge 1:N</text>
+                
+                <!-- PLANETE vers USINE -->
+                <line x1="750" y1="150" x2="950" y2="250" stroke="#4299e1" stroke-width="3"/>
+                <text x="830" y="190" fill="#2c5282" font-size="12">abrite 1:N</text>
+                
+                <!-- BASE vers VAISSEAU -->
+                <line x1="380" y1="370" x2="450" y2="650" stroke="#4299e1" stroke-width="3"/>
+                <text x="390" y="500" fill="#2c5282" font-size="12">entretient 1:N</text>
+                
+                <!-- USINE vers CLONE -->
+                <line x1="950" y1="370" x2="900" y2="450" stroke="#4299e1" stroke-width="3"/>
+                <text x="900" y="400" fill="#2c5282" font-size="12">produit 1:N</text>
+                
+                <!-- MODELE vers CLONE -->
+                <line x1="1100" y1="520" x2="1000" y2="520" stroke="#4299e1" stroke-width="3"/>
+                <text x="1020" y="510" fill="#2c5282" font-size="12">template 1:N</text>
+                
+                <!-- UNITE vers VAISSEAU -->
+                <line x1="550" y1="580" x2="500" y2="650" stroke="#4299e1" stroke-width="3"/>
+                <text x="500" y="610" fill="#2c5282" font-size="12">affecte 0:N</text>
+                
+                <!-- MISSION - Relations N:N -->
+                <line x1="600" y1="850" x2="200" y2="200" stroke="#9f7aea" stroke-width="3" stroke-dasharray="5,5"/>
+                <text x="350" y="500" fill="#553c9a" font-size="12">N:N JEDI</text>
+                
+                <line x1="700" y1="850" x2="850" y2="580" stroke="#9f7aea" stroke-width="3" stroke-dasharray="5,5"/>
+                <text x="750" y="700" fill="#553c9a" font-size="12">N:N CLONE</text>
+                
+                <line x1="650" y1="850" x2="500" y2="780" stroke="#9f7aea" stroke-width="3" stroke-dasharray="5,5"/>
+                <text x="530" y="810" fill="#553c9a" font-size="12">N:N VAISSEAU</text>
+            </svg>
+        </div>
+        
+        <div class="instruction">
+            <strong>💡 Pour capturer cette image :</strong><br>
+            Faites un clic droit → "Enregistrer l'image sous..." ou utilisez un outil de capture d'écran<br>
+            (Windows : Win+Shift+S | Mac : Cmd+Shift+4)
+        </div>
+    </div>
+</body>
+</html>
